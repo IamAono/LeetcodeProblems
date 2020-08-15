@@ -4,21 +4,12 @@ public:
 		if (nums.size() <= 2) {
 			return nums.size();
 		}
-		int s = nums.size();
-		int count = 1;
-		for (int i = 1; i < nums.size(); i++) {
-			if (nums.at(i) != nums.at(i - 1)) {
-				count = 1;
-			}
-			else if (count == 2) {
+		for (int i = 1; i < nums.size() - 1; i++) {
+			if (nums.at(i - 1) == nums.at(i) && nums.at(i + 1) == nums.at(i)) {
 				nums.erase(nums.begin() + i);
 				i--;
-				s--;
-			}
-			else {
-				count++;
 			}
 		}
-		return s;
+		return nums.size();
 	}
 };
