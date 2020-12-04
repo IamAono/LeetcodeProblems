@@ -1,26 +1,36 @@
 class MapSum {
     Map<String, Integer> m = new HashMap<String, Integer>();
+    Map<String, Integer> prefixes = new HashMap<String, Integer>();
     /** Initialize your data structure here. */
     public MapSum() {
         
     }
     
     public void insert(String key, int val) {
-        m.put(key, val);
+        boolean contains = false;
+        int prev = 0;
+        if(m.containsKey(key)) {
+            prev = m.get(key);
+            m.put(key, val);
+            contains = true;
+        }
+        else {
+            m.put(key, val);
+        }
+        String s = "";
+        for(int i = 0; i < key.length(); i++) {
+            s += key.charAt(i);
+            if(contains) {
+                prefixes.put(s, prefixes.get(s) - prev + val);
+            }
+            else {
+                prefixes.put(s, prefixes.getOrDefault(s, 0) + val);
+            }
+        }
     }
     
     public int sum(String prefix) {
-        int x = 0;
-        Set<String> s = m.keySet();
-        for(String s2 : s) {
-            if(prefix.length() > s2.length()) {
-                continue;
-            }
-            if(s2.substring(0, prefix.length()).equals(prefix)) {
-                x += m.get(s2);
-            }
-        }
-        return x;
+        return(prefixes.getOrDefault(prefix, 0));
     }
 }
 
